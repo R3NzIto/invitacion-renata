@@ -1,0 +1,725 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mis XV Años - Renata</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,600&family=Lato:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f8f6f1;
+      --ink: #121212;
+      --muted: #646464;
+      --gold: #c9a96e;
+      --gold-soft: #e8d5b0;
+      --line: #d9d9d9;
+      --band: #ececec;
+      --shadow: rgba(0, 0, 0, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Lato", sans-serif;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(rgba(0, 0, 0, 0.025) 0.6px, transparent 0.6px),
+        radial-gradient(rgba(0, 0, 0, 0.015) 0.6px, transparent 0.6px);
+      background-size: 3px 3px, 5px 5px;
+      background-position: 0 0, 1px 1px;
+      min-height: 100vh;
+      opacity: 0;
+      animation: pageFade 1.2s ease forwards;
+    }
+
+    .sparkles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .sparkle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201, 169, 110, 0.9) 0%, rgba(232, 213, 176, 0.35) 55%, transparent 100%);
+      filter: blur(0.2px);
+      opacity: 0;
+      animation-name: floatSparkle;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
+
+    .invitation {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 600px);
+      margin: 0 auto;
+      padding: 28px 24px 52px;
+    }
+
+    .card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid #f0f0f0;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .section {
+      padding: 28px 26px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tape {
+      position: absolute;
+      width: 95px;
+      height: 24px;
+      background: rgba(201, 169, 110, 0.2);
+      border: 1px solid rgba(201, 169, 110, 0.3);
+      backdrop-filter: blur(0.5px);
+      z-index: 3;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    }
+
+    .tape.t1 {
+      top: 14px;
+      left: 24px;
+      transform: rotate(-6deg);
+    }
+
+    .tape.t2 {
+      top: 198px;
+      right: 18px;
+      transform: rotate(7deg);
+    }
+
+    .tape.t3 {
+      top: 642px;
+      left: 42px;
+      transform: rotate(-4deg);
+    }
+
+    .tape.t4 {
+      bottom: 310px;
+      right: 38px;
+      transform: rotate(5deg);
+    }
+
+    .title {
+      text-align: center;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2rem, 8vw, 2.9rem);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .polaroid-wrap {
+      margin: 22px auto 20px;
+      width: min(100%, 340px);
+      transform: rotate(-2.2deg);
+    }
+
+    .polaroid {
+      background: #fff;
+      border: 1px solid #f2f2f2;
+      padding: 14px 14px 40px;
+      box-shadow: 0 8px 18px var(--shadow);
+    }
+
+    .photo-slot {
+      background: #d8d8d8;
+      aspect-ratio: 4 / 5;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      border: 1px solid #cfcfcf;
+    }
+
+    .photo-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-slot img[src=""] {
+      display: none;
+    }
+
+    .photo-placeholder {
+      color: #5e5e5e;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .photo-slot img:not([src=""]) + .photo-placeholder {
+      display: none;
+    }
+
+    .name {
+      text-align: center;
+      margin: 0;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(3rem, 13vw, 4rem);
+      font-style: italic;
+      font-weight: 600;
+      line-height: 0.95;
+      animation: nameIntro 1.1s ease 0.2s both;
+    }
+
+    .name-line {
+      width: 140px;
+      height: 1px;
+      margin: 14px auto 0;
+      background: linear-gradient(90deg, transparent 0%, var(--gold) 25%, var(--gold) 75%, transparent 100%);
+    }
+
+    .band {
+      background: var(--band);
+      border-top: 1px solid #e2e2e2;
+      border-bottom: 1px solid #e2e2e2;
+      text-align: center;
+    }
+
+    .invite-text {
+      margin: 0;
+      font-size: clamp(0.74rem, 2.5vw, 0.9rem);
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      line-height: 1.8;
+      text-transform: uppercase;
+    }
+
+    .details {
+      text-align: center;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .details h2,
+    .dresscode h2,
+    .countdown-section h2,
+    .location h2,
+    .rsvp h2 {
+      margin: 0 0 14px;
+      font-family: "Playfair Display", serif;
+      font-size: 1.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .detail-line {
+      margin: 8px 0;
+      font-size: 1.01rem;
+      line-height: 1.55;
+      letter-spacing: 0.03em;
+    }
+
+    .dresscode {
+      text-align: center;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(232, 213, 176, 0.12);
+    }
+
+    .dress-text {
+      margin: 0;
+      font-size: 1.04rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .countdown-section {
+      text-align: center;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(60px, 90px));
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .count-card {
+      border: 1px solid var(--gold);
+      background: rgba(255, 255, 255, 0.88);
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-content: center;
+      gap: 6px;
+      padding: 6px 4px;
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+      animation: cardIn 0.5s ease forwards;
+    }
+
+    .count-card:nth-child(1) { animation-delay: 0.1s; }
+    .count-card:nth-child(2) { animation-delay: 0.2s; }
+    .count-card:nth-child(3) { animation-delay: 0.3s; }
+    .count-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .count-value {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(1.55rem, 5.2vw, 2rem);
+      line-height: 1;
+      display: inline-block;
+      min-width: 2.2ch;
+      transform-origin: center bottom;
+      backface-visibility: hidden;
+      will-change: transform, opacity;
+    }
+
+    .count-value.flip {
+      animation: flip 0.48s ease;
+    }
+
+    .count-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .countdown-message {
+      margin-top: 16px;
+      font-family: "Playfair Display", serif;
+      font-size: 1.25rem;
+      color: var(--ink);
+      opacity: 0;
+      transform: scale(0.94);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .countdown-message.visible {
+      opacity: 1;
+      transform: scale(1);
+      animation: fiesta 1.3s ease infinite;
+    }
+
+    .location {
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+
+    .address {
+      margin: 0 0 14px;
+      font-size: 0.95rem;
+      color: #2f2f2f;
+      letter-spacing: 0.03em;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border: 1px solid var(--gold);
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-map {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .btn-map:hover {
+      background: var(--gold-soft);
+      color: #000;
+    }
+
+    .map-frame {
+      width: 100%;
+      height: 250px;
+      margin-top: 16px;
+      border: 1px solid #ddd;
+      filter: grayscale(0.15) contrast(0.95);
+    }
+
+    .rsvp {
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+
+    .rsvp-question {
+      margin: 0 0 18px;
+      font-size: 1.05rem;
+      letter-spacing: 0.03em;
+    }
+
+    .btn-rsvp {
+      min-width: 250px;
+      background: #111;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      font-size: 0.84rem;
+      padding: 15px 22px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .btn-rsvp:hover {
+      background: var(--gold);
+      color: #000;
+    }
+
+    .small-note {
+      margin: 12px 0 0;
+      color: #7a7a7a;
+      font-size: 0.84rem;
+    }
+
+    @media (max-width: 768px) {
+      .invitation {
+        width: 100%;
+        padding: 18px 16px 36px;
+      }
+
+      .section {
+        padding: 24px 16px;
+      }
+
+      .polaroid-wrap {
+        width: min(100%, 360px);
+      }
+
+      .countdown-grid {
+        grid-template-columns: repeat(4, minmax(60px, 72px));
+        gap: 8px;
+      }
+
+      .count-value {
+        font-size: 1.4rem;
+      }
+
+      .map-frame {
+        height: 200px;
+      }
+
+      .btn-rsvp {
+        min-width: 100%;
+      }
+    }
+
+    @keyframes pageFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes nameIntro {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes cardIn {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes flip {
+      0% {
+        transform: rotateX(0deg);
+        opacity: 1;
+      }
+      50% {
+        transform: rotateX(90deg);
+        opacity: 0.25;
+      }
+      100% {
+        transform: rotateX(0deg);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes fiesta {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes floatSparkle {
+      0% {
+        transform: translateY(15vh) translateX(0);
+        opacity: 0;
+      }
+      18% {
+        opacity: 0.35;
+      }
+      50% {
+        transform: translateY(-25vh) translateX(8px);
+        opacity: 0.25;
+      }
+      85% {
+        opacity: 0.1;
+      }
+      100% {
+        transform: translateY(-60vh) translateX(-4px);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sparkles" id="sparkles" aria-hidden="true"></div>
+
+  <main class="invitation">
+    <article class="card">
+      <span class="tape t1" aria-hidden="true"></span>
+      <span class="tape t2" aria-hidden="true"></span>
+      <span class="tape t3" aria-hidden="true"></span>
+      <span class="tape t4" aria-hidden="true"></span>
+
+      <section class="section reveal show">
+        <h1 class="title">MIS XV AÑOS</h1>
+
+        <div class="polaroid-wrap">
+          <div class="polaroid">
+            <div class="photo-slot">
+              <!-- REEMPLAZAR AQUÍ: cambiá el valor de src por la URL de la foto de Renata -->
+              <img src="fotoreni.jpeg" alt="Foto de Renata" />
+              <div class="photo-placeholder">Tu foto aquí</div>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="name">Renata</h2>
+        <div class="name-line" aria-hidden="true"></div>
+      </section>
+
+      <section class="section band reveal">
+        <p class="invite-text">TE INVITO A CELEBRAR EL INICIO DE UNA NUEVA ETAPA EN MI VIDA, LLENA DE SUEÑOS Y GRANDES LOGROS.</p>
+      </section>
+
+      <section class="section details reveal">
+        <h2>Detalles</h2>
+        <p class="detail-line"><strong>Fecha:</strong> Sábado 13 de junio de 2026</p>
+        <p class="detail-line"><strong>Hora:</strong> 21:00 hs</p>
+        <p class="detail-line"><strong>Lugar:</strong> Salon de Eventos Gardens Paradise, Tropero Sosa 1052, Maipú, Mendoza</p>
+      </section>
+
+      <section class="section dresscode reveal">
+        <h2>Vestimenta</h2>
+        <p class="dress-text">Elegante sport</p>
+      </section>
+
+      <section class="section countdown-section reveal" id="countdown-section">
+        <h2>Cuenta Regresiva</h2>
+        <div class="countdown-grid" id="countdown-grid">
+          <div class="count-card">
+            <span class="count-value" data-key="days">00</span>
+            <span class="count-label">DÍAS</span>
+          </div>
+          <div class="count-card">
+            <span class="count-value" data-key="hours">00</span>
+            <span class="count-label">HORAS</span>
+          </div>
+          <div class="count-card">
+            <span class="count-value" data-key="minutes">00</span>
+            <span class="count-label">MINUTOS</span>
+          </div>
+          <div class="count-card">
+            <span class="count-value" data-key="seconds">00</span>
+            <span class="count-label">SEGUNDOS</span>
+          </div>
+        </div>
+        <p class="countdown-message" id="countdown-message">¡La fiesta ya comenzó! 🎉</p>
+      </section>
+
+      <section class="section location reveal">
+        <h2>Ubicación</h2>
+        <p class="address">Gardens Paradise · Tropero Sosa 1052, Maipú, Mendoza</p>
+        <a
+          class="btn btn-map"
+          href="https://maps.app.goo.gl/b53reVjUUHWMAutu8"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Ver ubicación en Google Maps"
+        >
+          <span aria-hidden="true">📍</span>
+          VER EN GOOGLE MAPS
+        </a>
+        <iframe
+          class="map-frame"
+          title="Mapa de Tropero Sosa 1052, Maipú, Mendoza"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Tropero+Sosa+1052,+Maip%C3%BA,+Mendoza,+Argentina&output=embed"
+        ></iframe>
+      </section>
+
+      <section class="section rsvp reveal">
+        <h2>Confirmación</h2>
+        <p class="rsvp-question">¿Vas a venir? ¡Confirmá tu asistencia!</p>
+        <a
+          class="btn btn-rsvp"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSfmBwr9czzb4Duei2UT6_udkzqPzmJBaVjABFp-lfgI_QZRrQ/viewform?usp=header"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          CONFIRMAR ASISTENCIA
+        </a>
+        <p class="small-note">Completá el formulario para confirmar tu lugar</p>
+      </section>
+    </article>
+  </main>
+
+  <script>
+    (function () {
+      const targetTime = new Date("2026-06-13T21:00:00-03:00").getTime();
+      const values = {
+        days: document.querySelector('[data-key="days"]'),
+        hours: document.querySelector('[data-key="hours"]'),
+        minutes: document.querySelector('[data-key="minutes"]'),
+        seconds: document.querySelector('[data-key="seconds"]')
+      };
+      const countdownMessage = document.getElementById("countdown-message");
+      const countdownGrid = document.getElementById("countdown-grid");
+      let timerId = null;
+
+      const previous = {
+        days: null,
+        hours: null,
+        minutes: null,
+        seconds: null
+      };
+
+      function formatNumber(value) {
+        return String(value).padStart(2, "0");
+      }
+
+      function setFlippingValue(element, key, nextValue) {
+        if (previous[key] === nextValue) {
+          return;
+        }
+
+        previous[key] = nextValue;
+        element.classList.remove("flip");
+        void element.offsetWidth;
+        element.textContent = nextValue;
+        element.classList.add("flip");
+      }
+
+      function updateCountdown() {
+        const now = Date.now();
+        const distance = targetTime - now;
+
+        if (distance <= 0) {
+          setFlippingValue(values.days, "days", "00");
+          setFlippingValue(values.hours, "hours", "00");
+          setFlippingValue(values.minutes, "minutes", "00");
+          setFlippingValue(values.seconds, "seconds", "00");
+          countdownMessage.classList.add("visible");
+          countdownGrid.setAttribute("aria-live", "off");
+          if (timerId !== null) {
+            clearInterval(timerId);
+            timerId = null;
+          }
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((distance / (1000 * 60)) % 60);
+        const seconds = Math.floor((distance / 1000) % 60);
+
+        setFlippingValue(values.days, "days", formatNumber(days));
+        setFlippingValue(values.hours, "hours", formatNumber(hours));
+        setFlippingValue(values.minutes, "minutes", formatNumber(minutes));
+        setFlippingValue(values.seconds, "seconds", formatNumber(seconds));
+      }
+
+      updateCountdown();
+      timerId = setInterval(updateCountdown, 1000);
+
+      const revealElements = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("show");
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.16 }
+      );
+
+      revealElements.forEach((element) => {
+        if (!element.classList.contains("show")) {
+          observer.observe(element);
+        }
+      });
+
+      const sparkleContainer = document.getElementById("sparkles");
+      const sparkleCount = 18;
+      for (let i = 0; i < sparkleCount; i += 1) {
+        const particle = document.createElement("span");
+        particle.className = "sparkle";
+
+        const size = (Math.random() * 2.2 + 1.2).toFixed(2);
+        const left = (Math.random() * 100).toFixed(2);
+        const duration = (Math.random() * 8 + 8).toFixed(2);
+        const delay = (Math.random() * -16).toFixed(2);
+
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${left}vw`;
+        particle.style.bottom = "-10vh";
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay = `${delay}s`;
+
+        sparkleContainer.appendChild(particle);
+      }
+    })();
+  </script>
+</body>
+</html>
