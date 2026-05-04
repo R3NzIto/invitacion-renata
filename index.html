@@ -66,7 +66,7 @@
       z-index: 1;
       width: min(100%, 600px);
       margin: 0 auto;
-      padding: 28px 24px 52px;
+      padding: 22px 24px 52px;
     }
 
     .card {
@@ -80,6 +80,15 @@
 
     .section {
       padding: 28px 26px;
+    }
+
+    .hero {
+      min-height: min(92vh, 760px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 34px;
+      padding-bottom: 34px;
     }
 
     .reveal {
@@ -139,15 +148,15 @@
     }
 
     .polaroid-wrap {
-      margin: 22px auto 20px;
-      width: min(100%, 340px);
+      margin: 24px auto 22px;
+      width: min(100%, 390px);
       transform: rotate(-2.2deg);
     }
 
     .polaroid {
       background: #fff;
       border: 1px solid #f2f2f2;
-      padding: 14px 14px 40px;
+      padding: 13px 13px 34px;
       box-shadow: 0 8px 18px var(--shadow);
     }
 
@@ -187,7 +196,7 @@
       text-align: center;
       margin: 0;
       font-family: "Cormorant Garamond", serif;
-      font-size: clamp(3rem, 13vw, 4rem);
+      font-size: clamp(3.3rem, 14vw, 4.55rem);
       font-style: italic;
       font-weight: 600;
       line-height: 0.95;
@@ -354,12 +363,25 @@
       transition: all 0.3s ease;
     }
 
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
     .btn-map {
       background: transparent;
       color: var(--ink);
     }
 
-    .btn-map:hover {
+    .btn-calendar {
+      background: #111;
+      color: var(--gold);
+    }
+
+    .btn-map:hover,
+    .btn-calendar:hover {
       background: var(--gold-soft);
       color: #000;
     }
@@ -414,25 +436,84 @@
         padding: 24px 16px;
       }
 
+      .hero {
+        min-height: min(88vh, 680px);
+        padding-top: 28px;
+        padding-bottom: 28px;
+      }
+
       .polaroid-wrap {
-        width: min(100%, 360px);
+        width: min(100%, 350px);
       }
 
       .countdown-grid {
-        grid-template-columns: repeat(4, minmax(60px, 72px));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 8px;
       }
 
+      .count-card {
+        min-width: 0;
+      }
+
       .count-value {
-        font-size: 1.4rem;
+        font-size: clamp(1.14rem, 6vw, 1.4rem);
+      }
+
+      .count-label {
+        font-size: clamp(0.48rem, 2.2vw, 0.62rem);
+        letter-spacing: 0.08em;
       }
 
       .map-frame {
         height: 200px;
       }
 
+      .btn,
       .btn-rsvp {
-        min-width: 100%;
+        width: 100%;
+        min-width: 0;
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .invitation {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .section {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .countdown-grid {
+        gap: 6px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      body {
+        opacity: 1;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+
+      .sparkles {
+        display: none;
       }
     }
 
@@ -518,7 +599,7 @@
       <span class="tape t3" aria-hidden="true"></span>
       <span class="tape t4" aria-hidden="true"></span>
 
-      <section class="section reveal show">
+      <section class="section hero reveal show">
         <h1 class="title">MIS XV AÑOS</h1>
 
         <div class="polaroid-wrap">
@@ -541,9 +622,9 @@
 
       <section class="section details reveal">
         <h2>Detalles</h2>
-        <p class="detail-line"><strong>Fecha:</strong> Sábado 13 de junio de 2026</p>
+        <p class="detail-line"><strong>Fecha:</strong> Sábado 27 de junio de 2026</p>
         <p class="detail-line"><strong>Hora:</strong> 21:00 hs</p>
-        <p class="detail-line"><strong>Lugar:</strong> Salon de Eventos Gardens Paradise, Tropero Sosa 1052, Maipú, Mendoza</p>
+        <p class="detail-line"><strong>Lugar:</strong> Salón de Eventos Gardens Paradise, Tropero Sosa 1052, Maipú, Mendoza</p>
       </section>
 
       <section class="section dresscode reveal">
@@ -553,7 +634,7 @@
 
       <section class="section countdown-section reveal" id="countdown-section">
         <h2>Cuenta Regresiva</h2>
-        <div class="countdown-grid" id="countdown-grid">
+        <div class="countdown-grid" id="countdown-grid" role="timer" aria-label="Cuenta regresiva para el cumpleaños">
           <div class="count-card">
             <span class="count-value" data-key="days">00</span>
             <span class="count-label">DÍAS</span>
@@ -577,16 +658,28 @@
       <section class="section location reveal">
         <h2>Ubicación</h2>
         <p class="address">Gardens Paradise · Tropero Sosa 1052, Maipú, Mendoza</p>
-        <a
-          class="btn btn-map"
-          href="https://maps.app.goo.gl/b53reVjUUHWMAutu8"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Ver ubicación en Google Maps"
-        >
-          <span aria-hidden="true">📍</span>
-          VER EN GOOGLE MAPS
-        </a>
+        <div class="button-row">
+          <a
+            class="btn btn-map"
+            href="https://maps.app.goo.gl/b53reVjUUHWMAutu8"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Ver ubicación en Google Maps"
+          >
+            <span aria-hidden="true">📍</span>
+            VER EN GOOGLE MAPS
+          </a>
+          <a
+            class="btn btn-calendar"
+            href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Mis%20XV%20A%C3%B1os%20-%20Renata&dates=20260628T000000Z/20260628T060000Z&details=Celebraci%C3%B3n%20de%20los%20XV%20a%C3%B1os%20de%20Renata.&location=Sal%C3%B3n%20de%20Eventos%20Gardens%20Paradise%2C%20Tropero%20Sosa%201052%2C%20Maip%C3%BA%2C%20Mendoza"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Agregar el cumpleaños al calendario"
+          >
+            <span aria-hidden="true">📅</span>
+            AGENDAR
+          </a>
+        </div>
         <iframe
           class="map-frame"
           title="Mapa de Tropero Sosa 1052, Maipú, Mendoza"
@@ -614,7 +707,8 @@
 
   <script>
     (function () {
-      const targetTime = new Date("2026-06-13T21:00:00-03:00").getTime();
+      const targetTime = new Date("2026-06-27T21:00:00-03:00").getTime();
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const values = {
         days: document.querySelector('[data-key="days"]'),
         hours: document.querySelector('[data-key="hours"]'),
@@ -642,10 +736,22 @@
         }
 
         previous[key] = nextValue;
+        if (reduceMotion) {
+          element.textContent = nextValue;
+          return;
+        }
+
         element.classList.remove("flip");
         void element.offsetWidth;
         element.textContent = nextValue;
         element.classList.add("flip");
+      }
+
+      function setCountdownLabel(days, hours, minutes, seconds) {
+        countdownGrid.setAttribute(
+          "aria-label",
+          `Faltan ${days} días, ${hours} horas, ${minutes} minutos y ${seconds} segundos para el cumpleaños`
+        );
       }
 
       function updateCountdown() {
@@ -658,7 +764,7 @@
           setFlippingValue(values.minutes, "minutes", "00");
           setFlippingValue(values.seconds, "seconds", "00");
           countdownMessage.classList.add("visible");
-          countdownGrid.setAttribute("aria-live", "off");
+          countdownGrid.setAttribute("aria-label", "La fiesta ya comenzó");
           if (timerId !== null) {
             clearInterval(timerId);
             timerId = null;
@@ -675,6 +781,7 @@
         setFlippingValue(values.hours, "hours", formatNumber(hours));
         setFlippingValue(values.minutes, "minutes", formatNumber(minutes));
         setFlippingValue(values.seconds, "seconds", formatNumber(seconds));
+        setCountdownLabel(days, hours, minutes, seconds);
       }
 
       updateCountdown();
@@ -699,25 +806,27 @@
         }
       });
 
-      const sparkleContainer = document.getElementById("sparkles");
-      const sparkleCount = 18;
-      for (let i = 0; i < sparkleCount; i += 1) {
-        const particle = document.createElement("span");
-        particle.className = "sparkle";
+      if (!reduceMotion) {
+        const sparkleContainer = document.getElementById("sparkles");
+        const sparkleCount = 18;
+        for (let i = 0; i < sparkleCount; i += 1) {
+          const particle = document.createElement("span");
+          particle.className = "sparkle";
 
-        const size = (Math.random() * 2.2 + 1.2).toFixed(2);
-        const left = (Math.random() * 100).toFixed(2);
-        const duration = (Math.random() * 8 + 8).toFixed(2);
-        const delay = (Math.random() * -16).toFixed(2);
+          const size = (Math.random() * 2.2 + 1.2).toFixed(2);
+          const left = (Math.random() * 100).toFixed(2);
+          const duration = (Math.random() * 8 + 8).toFixed(2);
+          const delay = (Math.random() * -16).toFixed(2);
 
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${left}vw`;
-        particle.style.bottom = "-10vh";
-        particle.style.animationDuration = `${duration}s`;
-        particle.style.animationDelay = `${delay}s`;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          particle.style.left = `${left}vw`;
+          particle.style.bottom = "-10vh";
+          particle.style.animationDuration = `${duration}s`;
+          particle.style.animationDelay = `${delay}s`;
 
-        sparkleContainer.appendChild(particle);
+          sparkleContainer.appendChild(particle);
+        }
       }
     })();
   </script>
